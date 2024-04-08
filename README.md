@@ -1,5 +1,11 @@
 # zapcloudwatch
 
+<div align="center">
+
+[![GoDoc][doc-img]][doc]
+
+</div>
+
 ## Installation
 
 ```sh
@@ -49,3 +55,6 @@ if err := core.Close(); err != nil {
 <hr>
 
 Released under the [BSD 3-Clause License](LICENSE).
+
+[doc-img]: https://pkg.go.dev/badge/github.com/uschen/zapcloudwatch
+[doc]: https://pkg.go.dev/github.com/uschen/zapcloudwatch
