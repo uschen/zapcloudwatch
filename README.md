@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<p>High performance (buffered) zap Core for CloudWatch Log.</p>
+
 [![GoDoc][doc-img]][doc]
 
 </div>
