@@ -39,11 +39,11 @@ var (
 )
 
 // OptionFunc -
-type OptionFunc func(*Core, params) error
+type OptionFunc func(*Core, *params) error
 
 // WithCloudWatchClient passes existing cloudwatchlogs.Client
 func WithCloudWatchClient(client *cloudwatchlogs.Client) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.cwc = client
 		return nil
 	}
@@ -52,7 +52,7 @@ func WithCloudWatchClient(client *cloudwatchlogs.Client) OptionFunc {
 // WithCreateLogGroup whether to create log group if it doesn't exist.
 // Default is false.
 func WithCreateLogGroup(create bool) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		p.createLogGroup = create
 		return nil
 	}
@@ -61,7 +61,7 @@ func WithCreateLogGroup(create bool) OptionFunc {
 // WithCreateLogStream whether to create log stream if it doesn't exist.
 // Default is false.
 func WithCreateLogStream(create bool) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		p.createLogStream = create
 		return nil
 	}
@@ -71,7 +71,7 @@ func WithCreateLogStream(create bool) OptionFunc {
 // this delay has passed, handle the bundle. The default is
 // bundler.DefaultDelayThreshold
 func WithBundlerDelayThreshold(threshold time.Duration) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.DelayThreshold = threshold
 		return nil
 	}
@@ -82,7 +82,7 @@ func WithBundlerDelayThreshold(threshold time.Duration) OptionFunc {
 // threshold, so it also serves as a limit. The default is
 // bundler.DefaultBundleCountThreshold.
 func WithBundlerBundleCountThreshold(threshold int) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.BundleCountThreshold = threshold
 		return nil
 	}
@@ -93,7 +93,7 @@ func WithBundlerBundleCountThreshold(threshold int) OptionFunc {
 // bundler.DefaultBundleByteThreshold. This triggers handling, but does not cap
 // the total size of a bundle.
 func WithBundlerBundleByteThreshold(threshold int) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.BundleByteThreshold = threshold
 		return nil
 	}
@@ -101,7 +101,7 @@ func WithBundlerBundleByteThreshold(threshold int) OptionFunc {
 
 // WithBundlerBundleByteLimit The maximum size of a bundle, in bytes. Zero means unlimited.
 func WithBundlerBundleByteLimit(limit int) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.BundleByteLimit = limit
 		return nil
 	}
@@ -111,7 +111,7 @@ func WithBundlerBundleByteLimit(limit int) OptionFunc {
 // keep in memory before returning ErrOverflow. The default is
 // bundler.DefaultBufferedByteLimit
 func WithBundlerBufferedByteLimit(limit int) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.BufferedByteLimit = limit
 		return nil
 	}
@@ -120,7 +120,7 @@ func WithBundlerBufferedByteLimit(limit int) OptionFunc {
 // WithBundlerHandlerLimit The maximum number of handler invocations that
 // can be running at once. The default is 1.
 func WithBundlerHandlerLimit(limit int) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.b.HandlerLimit = limit
 		return nil
 	}
@@ -128,7 +128,7 @@ func WithBundlerHandlerLimit(limit int) OptionFunc {
 
 // WithOnError OnError is called when an error occurs in a call to Log or Flush.
 func WithOnError(onError func(error)) OptionFunc {
-	return func(cc *Core, p params) error {
+	return func(cc *Core, p *params) error {
 		cc.c.OnError = onError
 		return nil
 	}
@@ -153,7 +153,7 @@ func NewCore(enc zapcore.Encoder, logGroupName, logStreamName string, enab zapco
 		c: c,
 	}
 
-	p := params{}
+	p := &params{}
 	for _, optionFn := range options {
 		if err := optionFn(cc, p); err != nil {
 			return nil, err
